@@ -1,0 +1,33 @@
+PCB Details
+
+- for 12v dc power rails, i used 0.4/0.5 mm width because it is a small prototype. If implemented for practical conditions then the thickness should be around 1 to 1.5 mm.
+- for ground, i used 0.35 mm width.
+- for triangle wave and audio comparison signals, i kept 0.25 mm width which is normal for signal lines.
+- pcb material is fr4 with 1.6mm board thickness which I kept standard for prototyping.
+
+Why I used specific Components and Problems I faced?
+
+for this project, i wanted to keep the circuit as simple as possible because the task was for an embedded hardware intern role. so i chose components that are easy to find and good enough to prove the working idea.
+
+i used the 555 timer ic because it can generate a stable high-frequency carrier without needing a complex setup. 
+my first plan was to use lm358 as an oscillator + integrator, but in ltspice it did not give pwm output because it got stuck at the rail voltage and i was unable to overcome the issue.
+also, lm358 was not showing in my symbol list, so i moved to lt1013 for comparison stage because it is a dual op-amp ic that works on single 12v dc supply and is available in the default library. 
+later i also tried lm393 comparator, but i faced problems because its symbol was not installed and i also could not load the spice model properly at first. 
+every time i tried to assign the prefix `x` or add a `.include` directive, the simulator either gave unknown subcircuit error or stack overflow. 
+
+for the power stage, i went with 2 n-channel mosfets in a half-bridge design because class-d audio needs push-pull switching. i used generic nmos symbols in ltspice because real mosfets like irf540n or irfz44n were not available in my installed library. 
+i also tried importing external models but again the model file wasn’t compatible or the sim kept crashing. so i decided to stay with generic nmos for simulation and wrote down the real mosfet names separately in documentation for hardware reference.
+
+i used an lc low-pass filter (10µh and 0.47µf) because pwm switching noise was 300khz, and the filter had to block that and only pass audio band to speaker. the 0.1µf capacitor in series with audio input is non-polarised because audio is ac and swings both sides.
+
+the main problems i faced were mostly with simulation models:
+- lm358 symbol not installed
+- lm393 symbol missing and spice model import failing
+- mosfet external models not supported
+- feedback loops causing stack overflow
+- large capacitors slowing oscillator into hz region
+
+but after changing timing cap to nf range, adding vref bias using divider, removing feedback from comparator stage, and using high impedance resistors to feed triangle, the circuit finally switched but still problems are there on the output side of the comparator.
+
+To Conclude, the overall steps to design and simulate felt quite complex, challenging and faced many errors but somehow i am able to deliver my side with what i am capable to do, not 100 percent, but did what i could to come closer to the task which is given.
+
