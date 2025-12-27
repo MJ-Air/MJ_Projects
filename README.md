@@ -41,5 +41,5 @@ files in this repo:
 - screen recording link (added as per task)
 
 note:
-i am beginner in using GITHUB, so if there are small mistakes please forgive. this is a simple prototype design to learn and test pwm audio modulation.
+i am not familiar at using GITHUB, so if there are small mistakes please forgive. this is a simple prototype design to learn and test pwm audio modulation.
 
